@@ -1,4 +1,7 @@
-const express = require("express");
+import express from "express";
+import { validateEmail } from "./utils/validateEmail.js";
+import { validateName } from "./utils/validateName.js";
+
 const app = express();
 const PORT = 3000;
 
@@ -16,15 +19,25 @@ app.get("/usuarios", (req, res) => {
 
 app.post("/usuarios", (req, res) => {
 
-    const { nome, email } = req.body;
-    const id = usuarios.length + 1;
+    const { nome, email } = req.body ?? {};
 
-    const usuario = { id, nome, email };
+    if(!validateName(nome)) {
+        return res.status(400).json({ error: "Nome inválido" });
+    }
+
+    if(!validateEmail(email)) {
+        return res.status(400).json({ error: "E-mail inválido." });
+    }
+
+    const usuario = { 
+        id: usuarios.length + 1, 
+        nome: nome.trim(), 
+        email: email.trim()
+    };
 
     usuarios.push(usuario);
 
     res.status(201).json(usuario);
-
 });
 
 app.put("/usuarios/:id", (req, res) => {
@@ -42,7 +55,6 @@ app.put("/usuarios/:id", (req, res) => {
     usuario.email = email || usuario.email;
 
     res.status(204).send();
-
 });
 
 app.delete("/usuarios/:id", (req, res) => {
