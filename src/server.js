@@ -32,7 +32,7 @@ app.post("/usuarios", (req, res) => {
     const usuario = { 
         id: usuarios.length + 1, 
         nome: nome.trim(), 
-        email: email.trim()
+        email: email
     };
 
     usuarios.push(usuario);
@@ -43,7 +43,7 @@ app.post("/usuarios", (req, res) => {
 app.put("/usuarios/:id", (req, res) => {
 
     const { id } = req.params;
-    const { nome, email } = req.body;
+    const { nome, email } = req.body ?? {};
 
     const usuario = usuarios.find(u => u.id === Number(id));
 
@@ -51,8 +51,16 @@ app.put("/usuarios/:id", (req, res) => {
         return res.status(404).json({ error: "Usuário não localizado" });
     }
 
-    usuario.nome = nome || usuario.nome;
-    usuario.email = email || usuario.email;
+    if(!validateName(nome)) {
+        return res.status(400).json({ error: "Nome inválido" });
+    }
+
+    if(!validateEmail(email)) {
+        return res.status(400).json({ error: "E-mail inválido." });
+    }
+
+    usuario.nome = nome.trim();
+    usuario.email = email;
 
     res.status(204).send();
 });

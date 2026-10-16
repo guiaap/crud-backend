@@ -6,7 +6,7 @@ export function validateName(name) {
 
     const containsNumbers = /\d/.test(name);
 
-    if(!name.trim() || containsNumbers || name.trim().length < 2) {
+    if(containsNumbers || name.trim().length < 2) {
         return false;
     }
 
