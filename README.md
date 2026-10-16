@@ -13,6 +13,7 @@ Mini-projeto desenvolvido com o objetivo de praticar os conceitos básicos de de
 
 - Node.js
 - Express
+- PostgreSQL
 
 ## Como executar
 
@@ -40,8 +41,10 @@ O servidor será iniciado em `http://localhost:3000`.
 | PUT | `/usuarios/:id` | Atualiza um usuário |
 | DELETE | `/usuarios/:id` | Exclui um usuário |
 
-## Observações
+## Banco de Dados
 
-Os dados são armazenados em memória, em um array, e não persistem após o encerramento do servidor.
+O projeto utiliza PostgreSQL. O script SQL para criação da tabela usuarios está disponível em database/schema.sql.
+
+## Observações
 
 Este projeto faz parte do meu processo de aprendizado em desenvolvimento back-end.
