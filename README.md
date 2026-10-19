@@ -14,6 +14,7 @@ Mini-projeto desenvolvido com o objetivo de praticar os conceitos básicos de de
 - Node.js
 - Express
 - PostgreSQL
+- Nodemon
 
 ## Como executar
 
@@ -36,7 +37,8 @@ O servidor será iniciado em `http://localhost:3000`.
 
 | Método | Rota | Descrição |
 |---|---|---|
-| GET | `/usuarios` | Lista os usuários |
+| GET | `/usuarios` | Lista todos os usuários |
+| GET | `/usuarios/:id` | Lista um usuário |
 | POST | `/usuarios` | Cadastra um usuário |
 | PUT | `/usuarios/:id` | Atualiza um usuário |
 | DELETE | `/usuarios/:id` | Exclui um usuário |
