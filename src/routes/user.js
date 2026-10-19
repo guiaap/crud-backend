@@ -25,6 +25,31 @@ router.get("/", async (req, res) => {
     }
 });
 
+router.get("/:id", async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+
+        const result = await pool.query(`
+            SELECT id, nome, email FROM usuarios WHERE id = $1
+        `, [id]);
+
+        res.status(200).json({
+            usuario: result.rows[0]
+        });
+
+    } catch(error) {
+
+        console.error("Erro ao consultar o banco de dados:", error);
+
+        res.status(500).json({
+            error: "Não foi possível busca o usuário",
+        });
+    }
+
+});
+
 router.post("/", async (req, res) => {
 
     const { nome, email } = req.body ?? {};
