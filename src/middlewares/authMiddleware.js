@@ -14,6 +14,7 @@ function authMiddleware(req, res, next) {
     const [scheme, token] = authorization.split(" ");
 
     if(scheme !== "Bearer" || !token) {
+        
         return res.status(401).json({
             message: "Formato de token inválido"
         });

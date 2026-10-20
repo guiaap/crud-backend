@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { pool } from "../config/database.js";
-import { validateEmail } from "../utils/validateEmail.js";
-import { validateName } from "../utils/validateName.js";
-import authMiddleware from "../middlewares/auth.js";
+import pool from "../config/database.js";
+import validateEmail from "../utils/validateEmail.js";
+import validateName from "../utils/validateName.js";
+import authMiddleware from "../middlewares/authMiddleware.js";
 
 const router = Router();
 
@@ -12,10 +12,12 @@ router.get("/", async (req, res) => {
 
     try {
 
-        const result = await pool.query("SELECT id, nome, email FROM usuarios ORDER BY id");
+        const result = await pool.query(`
+            SELECT id, name, email FROM users ORDER BY id
+        `);
 
         res.status(200).json({
-            usuarios: result.rows,
+            users: result.rows,
         });
     
     } catch(error) {
@@ -35,11 +37,11 @@ router.get("/:id", async (req, res) => {
     try {
 
         const result = await pool.query(`
-            SELECT id, nome, email FROM usuarios WHERE id = $1
+            SELECT id, name, email FROM users WHERE id = $1
         `, [id]);
 
         res.status(200).json({
-            usuario: result.rows[0]
+            user: result.rows[0]
         });
 
     } catch(error) {
@@ -55,9 +57,9 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
 
-    const { nome, email } = req.body ?? {};
+    const { name, email } = req.body ?? {};
 
-    if(!validateName(nome)) {
+    if(!validateName(name)) {
         return res.status(400).json({ error: "Nome inválido" });
     }
 
@@ -68,9 +70,9 @@ router.post("/", async (req, res) => {
     try {
 
         const result = await pool.query(`
-         INSERT INTO usuarios(nome, email) VALUES($1, $2)
-         RETURNING id, nome, email
-         `, [nome, email]);
+         INSERT INTO users(name, email) VALUES($1, $2)
+         RETURNING id, name, email
+         `, [name, email]);
 
         res.status(200).json({
             message: "Usuário criado com sucesso.",
@@ -90,9 +92,9 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
 
     const { id } = req.params;
-    const { nome, email } = req.body ?? {};
+    const { name, email } = req.body ?? {};
 
-    if(!validateName(nome)) {
+    if(!validateName(name)) {
         return res.status(400).json({ error: "Nome inválido" });
     }
 
@@ -103,9 +105,9 @@ router.put("/:id", async (req, res) => {
     try {
 
         const result = await pool.query(`
-            UPDATE usuarios SET nome = $1, email = $2
+            UPDATE users SET name = $1, email = $2
             WHERE id = $3 RETURNING *
-        `, [nome, email, id]);
+        `, [name, email, id]);
 
         res.status(200).json({
             message: "Usuário atualizado com sucesso.",
@@ -129,7 +131,7 @@ router.delete("/:id", async (req, res) => {
     try {
 
         const result = await pool.query(`
-            DELETE FROM usuarios WHERE id = $1 RETURNING *
+            DELETE FROM users WHERE id = $1 RETURNING *
         `, [id]);
 
         res.status(200).json({

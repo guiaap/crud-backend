@@ -8,13 +8,13 @@ router.post("/", async (req, res) => {
 
     try {
 
-        const { email, senha } = req.body;
+        const { email, password } = req.body;
 
         if(
             typeof email !== "string" ||
-            typeof senha !== "string" ||
+            typeof password !== "string" ||
             !email ||
-            !senha
+            !password
         ) {
             
             return res.status(400).json({
@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
         const IsEmailValid = email === process.env.ADMIN_EMAIL;
 
         const isPasswordValid = await bcrypt.compare(
-            senha, process.env.ADMIN_PASSWORD_HASH
+            password, process.env.ADMIN_PASSWORD_HASH
         );
 
         if(!IsEmailValid || !isPasswordValid) {

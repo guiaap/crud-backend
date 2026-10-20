@@ -1,4 +1,4 @@
-export function validateEmail(email) {
+function validateEmail(email) {
 
     if(typeof email !== "string") {
         return false;
@@ -8,4 +8,6 @@ export function validateEmail(email) {
 
     return regex.test(email);
 }
+
+export default validateEmail;
 

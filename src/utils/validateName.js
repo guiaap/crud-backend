@@ -1,4 +1,4 @@
-export function validateName(name) {
+function validateName(name) {
 
     if(typeof name !== "string") {
         return false;
@@ -12,4 +12,7 @@ export function validateName(name) {
 
     return true;
 }
+
+export default validateName;
+
 
