@@ -2,8 +2,11 @@ import { Router } from "express";
 import { pool } from "../config/database.js";
 import { validateEmail } from "../utils/validateEmail.js";
 import { validateName } from "../utils/validateName.js";
+import authMiddleware from "../middlewares/auth.js";
 
 const router = Router();
+
+router.use(authMiddleware);
 
 router.get("/", async (req, res) => {
 
